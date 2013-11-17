@@ -95,9 +95,10 @@ public class TreeLearning
 			System.out.println("");
 			System.out.println("Selcet a option");
 			System.out.println(" 1. Load a new .arff file to learn from, or load a existing tree");
-			System.out.println(" 2. Test the accuracy of the decision tree");
-			System.out.println(" 3. Apply the decision tree to new cases");
-			System.out.println(" 4. Exit");
+			System.out.println(" 2. Save loaded tree as .model file");
+			System.out.println(" 3. Test the accuracy of the decision tree");
+			System.out.println(" 4. Apply the decision tree to new cases");
+			System.out.println(" 5. Exit");
 			System.out.println("");
 
 			Console console = System.console();
@@ -110,17 +111,35 @@ public class TreeLearning
 				loadOrLearnTree();
 				break;
 
-			// Test the accuracy of the decision tree
+			// Serialize and save the loaded tree
 			case 2:
+				try
+				{
+					String savePath = console.readLine("Filename to save (excluding .model): ");
+					SerializationHelper.write(savePath + ".model", learntModel);
+
+					System.out.println("Model saved as " + savePath + ".model");
+				}
+				catch (Exception e)
+				{
+					System.out.println("");
+					System.out.println(e.toString());
+					System.out.println("Unable to save tree model");
+					System.out.println("");
+				}
+				break;
+
+			// Test the accuracy of the decision tree
+			case 3:
 				// LOAD IN ANOTHER ARFF FILE AND PRINT THE CONFUSION MATRIX
 				break;
 
 			// Apply the decision tree against read in cases
-			case 3:
+			case 4:
 				// ASK FOR A FILE AND LOAD THE DATA AND
 				break;
 
-			case 4: System.exit(0);
+			case 5: System.exit(0);
 
 			// Invalid option
 			default:
