@@ -7,37 +7,15 @@ public class TreeLearning
 		new TreeLearning();
 	}
 
-	/**
-	 * Kick off the tree learning program when created
-	 */
 	public TreeLearning()
 	{
 		loadOrLearnTree();
 
-		boolean exit = false;
-
-		while ( ! exit)
+		while (true)
 		{
-			switch (promptMenu())
-			{
-				// Learn from a new tree
-				case 1:
-
-					break;
-
-				// Test decision tree accuracy
-				case 2:
-
-					break;
-
-				// Apply
-
-
-			}
+			executePrimaryActions();
 		}
 	}
-
-
 
 	public void loadOrLearnTree()
 	{
@@ -51,7 +29,6 @@ public class TreeLearning
 
 			Console console = System.console();
 			String selected = console.readLine("Select Option: ");
-			System.out.println("");
 
 			String filename;
 
@@ -71,7 +48,6 @@ public class TreeLearning
 					FileReader model = new FileReader(filename);
 					return;
 
-				// Exit option
 				case 3: System.exit(0);
 
 				// Invalid option
@@ -87,8 +63,46 @@ public class TreeLearning
 		}
 	}
 
-	public int promptMenu()
+	public void executePrimaryActions()
 	{
-		return 1;
+		while (true)
+		{
+			System.out.println("");
+			System.out.println("Selcet a option");
+			System.out.println(" 1. Load a new .arff file to learn from, or load a existing tree");
+			System.out.println(" 2. Test the accuracy of the decision tree");
+			System.out.println(" 3. Apply the decision tree to new cases");
+			System.out.println(" 4. Exit");
+			System.out.println("");
+
+			Console console = System.console();
+			String selected = console.readLine("Select Option: ");
+
+			switch (Integer.parseInt(selected))
+			{
+			// Reload the tree
+			case 1:
+				loadOrLearnTree();
+				break;
+
+			// Test the accuracy of the decision tree
+			case 2:
+				// LOAD IN ANOTHER ARFF FILE AND PRINT THE CONFUSION MATRIX
+				break;
+
+			// Apply the decision tree against read in cases
+			case 3:
+				// ASK FOR A FILE AND LOAD THE DATA AND
+				break;
+
+			case 4: System.exit(0);
+
+			// Invalid option
+			default:
+				System.out.print("Invalid option, try again\n\n");
+				continue;
+			}
+		}
 	}
+
 }
