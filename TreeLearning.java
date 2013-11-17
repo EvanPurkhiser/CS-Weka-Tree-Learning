@@ -142,7 +142,7 @@ public class TreeLearning
 
 					// Cross validate learnt model against the test data
 					Evaluation eval = new Evaluation(testData);
-					eval.crossValidateModel(learntModel, testData, 10, new Random(1));
+					eval.evaluateModel(learntModel, testData);
 
 					// Print confusion matrix
 					System.out.println(eval.toSummaryString("\nResults\n======\n", false));
@@ -191,15 +191,11 @@ public class TreeLearning
 						break;
 				}
 
-				// Read how many folds to cross validate with
-				String folds = console.readLine("Num Folds (at least " + newCases.numInstances() + ")");
-				int numFolds = Integer.parseInt(folds);
-
 				try
 				{
-					// Do cross validation against data
+					// Do evaluate model against the learnt model
 					Evaluation eval = new Evaluation(newCases);
-					eval.crossValidateModel(learntModel, newCases, numFolds, new Random(1));
+					eval.evaluateModel(learntModel, newCases);
 
 					// Print confusion matrix
 					System.out.println(eval.toSummaryString("\nResults\n======\n", false));
