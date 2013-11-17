@@ -4,6 +4,7 @@ import weka.core.Instances;
 import weka.classifiers.Evaluation;
 import weka.classifiers.trees.J48;
 import java.io.*;
+import java.util.*;
 
 public class TreeLearning
 {
@@ -131,7 +132,30 @@ public class TreeLearning
 
 			// Test the accuracy of the decision tree
 			case 3:
-				// LOAD IN ANOTHER ARFF FILE AND PRINT THE CONFUSION MATRIX
+				String dataFile = console.readLine("Data file to test against: ");
+
+				try
+				{
+					// Load in the new data
+					DataSource source = new DataSource(dataFile);
+					Instances testData = source.getDataSet();
+					testData.setClassIndex(testData.numAttributes() - 1);
+
+					// Cross validate learnt model against the test data
+					Evaluation eval = new Evaluation(testData);
+					eval.crossValidateModel(learntModel, testData, 10, new Random(1));
+
+					// Print confusion matrix
+					System.out.println(eval.toSummaryString("\nResults\n======\n", false));
+					System.out.println(eval.toMatrixString());
+				}
+				catch (Exception e)
+				{
+					System.out.println("");
+					System.out.println(e.toString());
+					System.out.println("Unable to cross validate new data and generate confusion matrix");
+					System.out.println("");
+				}
 				break;
 
 			// Apply the decision tree against read in cases
