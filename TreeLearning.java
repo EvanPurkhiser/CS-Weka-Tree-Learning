@@ -55,15 +55,14 @@ public class TreeLearning
 					// Learn the tree
 					train.setClassIndex(train.numAttributes() - 1);
 					learntModel.buildClassifier(train);
-
-					return;
+					break;
 
 				// Handle loading the existing model
 				case 2:
 					// Deserialize the object
 					filename  = console.readLine("Enter model file path: ");
 					learntModel = (J48) SerializationHelper.read(filename);
-					return;
+					break;
 
 				case 3: System.exit(0);
 
@@ -72,6 +71,12 @@ public class TreeLearning
 					System.out.print("Invalid option, try again\n\n");
 					continue;
 				}
+
+				// Print out the loaded tree
+				System.out.println("");
+				System.out.println(learntModel.toString());
+
+				return;
 			}
 			catch (Exception e)
 			{
