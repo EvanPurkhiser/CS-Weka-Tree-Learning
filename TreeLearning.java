@@ -1,3 +1,7 @@
+import weka.core.converters.ConverterUtils.DataSource;
+import weka.core.Instances;
+import weka.classifiers.Evaluation;
+import weka.classifiers.trees.J48;
 import java.io.*;
 
 public class TreeLearning
@@ -6,6 +10,8 @@ public class TreeLearning
 	{
 		new TreeLearning();
 	}
+
+	J48 learntModel;
 
 	public TreeLearning()
 	{
@@ -31,6 +37,7 @@ public class TreeLearning
 			String selected = console.readLine("Select Option: ");
 
 			String filename;
+			learntModel = new J48();
 
 			try
 			{
@@ -39,7 +46,15 @@ public class TreeLearning
 				// Handle loading the arff file
 				case 1:
 					filename = console.readLine("Enter .arff file path: ");
-					FileReader arff = new FileReader(filename);
+
+					// Load the data source and learn the model
+					DataSource source = new DataSource(filename);
+					Instances train = source.getDataSet();
+
+					// Learn the tree
+					train.setClassIndex(train.numAttributes() - 1);
+					learntModel.buildClassifier(train);
+
 					return;
 
 				// Handle loading the existing model
@@ -56,9 +71,12 @@ public class TreeLearning
 					continue;
 				}
 			}
-			catch (FileNotFoundException e)
+			catch (Exception e)
 			{
-				System.out.print("File could not be loaded, please try again\n\n");
+				System.out.println("");
+				System.out.println(e.toString());
+				System.out.println("File could not be loaded, please try again");
+				System.out.println("");
 			}
 		}
 	}
