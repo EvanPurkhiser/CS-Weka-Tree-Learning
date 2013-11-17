@@ -1,6 +1,5 @@
 import weka.core.converters.ConverterUtils.DataSource;
-import weka.core.SerializationHelper;
-import weka.core.Instances;
+import weka.core.*;
 import weka.classifiers.Evaluation;
 import weka.classifiers.trees.J48;
 import java.io.*;
@@ -14,6 +13,7 @@ public class TreeLearning
 	}
 
 	J48 learntModel;
+	Instances train;
 
 	public TreeLearning()
 	{
@@ -51,7 +51,7 @@ public class TreeLearning
 
 					// Load the data source and learn the model
 					DataSource source = new DataSource(filename);
-					Instances train = source.getDataSet();
+					train = source.getDataSet();
 
 					// Learn the tree
 					train.setClassIndex(train.numAttributes() - 1);
@@ -159,7 +159,60 @@ public class TreeLearning
 
 			// Apply the decision tree against read in cases
 			case 4:
-				// ASK FOR A FILE AND LOAD THE DATA AND
+				if (train == null)
+				{
+					System.out.println("Training data must be loaded from a .arff file to determine attributes");
+					System.out.println("");
+				}
+
+				// Clone the set of instances
+				Instances newCases = new Instances(train);
+				newCases.delete();
+
+				while (true)
+				{
+					Instance newInsatnce = new DenseInstance(newCases.numAttributes());
+					System.out.println("");
+					System.out.println("Enter values for the attributes...");
+
+					for (int i = 0; i < newCases.numAttributes(); ++i)
+					{
+						Attribute attribute = newCases.attribute(i);
+						String value = console.readLine(attribute.name() + ": ");
+
+						newInsatnce.setValue(attribute, value);
+					}
+
+					newCases.add(newInsatnce);
+
+					System.out.println("");
+
+					if ( ! console.readLine("Add another case? [y/n] ").toLowerCase().equals("y"))
+						break;
+				}
+
+				// Read how many folds to cross validate with
+				String folds = console.readLine("Num Folds (at least " + newCases.numInstances() + ")");
+				int numFolds = Integer.parseInt(folds);
+
+				try
+				{
+					// Do cross validation against data
+					Evaluation eval = new Evaluation(newCases);
+					eval.crossValidateModel(learntModel, newCases, numFolds, new Random(1));
+
+					// Print confusion matrix
+					System.out.println(eval.toSummaryString("\nResults\n======\n", false));
+					System.out.println(eval.toMatrixString());
+				}
+				catch (Exception e)
+				{
+					System.out.println("");
+					System.out.println(e.toString());
+					System.out.println("Unable to cross validate and create confusion matrix against entered cases");
+					System.out.println("");
+				}
+
 				break;
 
 			case 5: System.exit(0);
