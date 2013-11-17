@@ -142,7 +142,15 @@ public class TreeLearning
 
 					// Cross validate learnt model against the test data
 					Evaluation eval = new Evaluation(testData);
-					eval.evaluateModel(learntModel, testData);
+
+					if (console.readLine("Cross Validate? [y/n]: ").toLowerCase().equals("y"))
+					{
+						eval.crossValidateModel(learntModel, testData, 10, new Random(1));
+					}
+					else
+					{
+						eval.evaluateModel(learntModel, testData);
+					}
 
 					// Print confusion matrix
 					System.out.println(eval.toSummaryString("\nResults\n======\n", false));
@@ -195,7 +203,15 @@ public class TreeLearning
 				{
 					// Do evaluate model against the learnt model
 					Evaluation eval = new Evaluation(newCases);
-					eval.evaluateModel(learntModel, newCases);
+
+					if (newCases.numInstances() >= 10 && console.readLine("Cross Validate? [y/n]: ").toLowerCase().equals("y"))
+					{
+						eval.crossValidateModel(learntModel, newCases, 10, new Random(1));
+					}
+					else
+					{
+						eval.evaluateModel(learntModel, newCases);
+					}
 
 					// Print confusion matrix
 					System.out.println(eval.toSummaryString("\nResults\n======\n", false));
