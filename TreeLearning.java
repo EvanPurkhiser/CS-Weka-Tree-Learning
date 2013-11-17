@@ -93,7 +93,6 @@ public class TreeLearning
 	{
 		while (true)
 		{
-			System.out.println("");
 			System.out.println("Selcet a option");
 			System.out.println(" 1. Load a new .arff file to learn from, or load a existing tree");
 			System.out.println(" 2. Save loaded tree as .model file");
