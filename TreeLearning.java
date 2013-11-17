@@ -1,4 +1,5 @@
 import weka.core.converters.ConverterUtils.DataSource;
+import weka.core.SerializationHelper;
 import weka.core.Instances;
 import weka.classifiers.Evaluation;
 import weka.classifiers.trees.J48;
@@ -59,8 +60,9 @@ public class TreeLearning
 
 				// Handle loading the existing model
 				case 2:
+					// Deserialize the object
 					filename  = console.readLine("Enter model file path: ");
-					FileReader model = new FileReader(filename);
+					learntModel = (J48) SerializationHelper.read(filename);
 					return;
 
 				case 3: System.exit(0);
