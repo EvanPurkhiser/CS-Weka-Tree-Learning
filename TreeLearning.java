@@ -119,6 +119,7 @@ public class TreeLearning
 					SerializationHelper.write(savePath + ".model", learntModel);
 
 					System.out.println("Model saved as " + savePath + ".model");
+					System.out.println("");
 				}
 				catch (Exception e)
 				{
